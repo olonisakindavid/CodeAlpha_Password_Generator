@@ -1,44 +1,57 @@
-# Password Generator
+
 import random
 import string
+import PySimpleGUI as gui
 
+gui.theme('BlueMono')
+gui.set_options(font='verdana 15')
 
-def generate_password(minimum_length, numbers=True, special_characters=True):
-    letters = string.ascii_letters
-    digits = string.digits
-    special = string.punctuation
+screen_layout = [
+    [gui.Text('Password Length: '), gui.InputText(size=15, key='-LENGTH-')],
+    [gui.Checkbox('Uppercase Letters🔠', default=True, key='-UPPER-')],
+    [gui.Checkbox('Lowercase Letters 🔡', default=True, key='-LOWER-')],
+    [gui.Checkbox('Digits 🔢', default=True, key='-DIGITS-')],
+    [gui.Checkbox('Symbols 🔣', default=True, key='-SYMBOLS-')],
+    [gui.Button('Generate Password')],
+    [gui.Text('Password'), gui.Multiline(
+        size=15, no_scrollbar=True, disabled=True, key='-PASS-')]
+]
 
-    characters = letters
-    if numbers:
-        characters += digits
-    if special_characters:
-        characters += special
+window = gui.Window('Password Generator', screen_layout)
 
-    password = ""
-    meets_criteria = False
-    contains_number = False
-    contains_special = False
+while True:
+    event, values = window.read()
 
-    while not meets_criteria or len(password) < minimum_length:
-        new_character = random.choice(characters)
-        password += new_character
+    if event == gui.WIN_CLOSED:
+        break
 
-        if new_character in digits:
-            contains_number = True
-        elif new_character in special:
-            contains_special = True
+    if event == 'Generate Password':
+        try:
+            length = int(values['-LENGTH-'])
 
-        meets_criteria = True
-        if numbers:
-            meets_criteria = contains_number
-        if special_characters:
-            meets_criteria = meets_criteria and contains_special
-    return password
+            use_upper = values['-UPPER-']
+            use_lower = values['-LOWER-']
+            use_digits = values['-DIGITS-']
+            use_symbols = values['-SYMBOLS-']
 
+            characters = ""
+            if use_upper:
+                characters += string.ascii_uppercase
+            if use_lower:
+                characters += string.ascii_lowercase
+            if use_digits:
+                characters += string.digits
+            if use_symbols:
+                characters += string.punctuation
 
-min_length = int(input("Enter the minimum Length: "))
-contains_number = input("Do you want to have numbers? (y/n?) ").lower() == "y"
-contains_special = input(
-    "Do you want to have any special characters? (y/n)").lower() == "y"
-password = generate_password(min_length, contains_number, contains_special)
-print("The generated password is:", password)
+            if characters:
+                password = ''.join(random.choice(characters)
+                                   for _ in range(length))
+                window['-PASS-'].update(password)
+            else:
+                window['-PASS-'].update("Please select at least one character type")
+
+        except ValueError:
+            window['-PASS-'].update("Invalid length")
+
+window.close()
