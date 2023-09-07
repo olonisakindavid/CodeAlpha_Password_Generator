@@ -1,4 +1,3 @@
-
 import random
 import string
 import PySimpleGUI as gui
@@ -52,6 +51,6 @@ while True:
                 window['-PASS-'].update("Please select at least one character type")
 
         except ValueError:
-            window['-PASS-'].update("Invalid length")
+            window['-PASS-'].update("Invalid, retry")
 
 window.close()
