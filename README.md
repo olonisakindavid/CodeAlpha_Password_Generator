@@ -7,7 +7,7 @@ This is a simple Python-based Password Generator with a graphical user interface
 ## Video Demonstration
 
 <img src="
-https://github.com/olonisakindavid/CodeAlpha_Password_Generator/assets/66315270/e7a627a6-cac1-4c5a-bd69-336b45be3a5d" width="400">
+https://github.com/olonisakindavid/CodeAlpha_Password_Generator/assets/66315270/e7a627a6-cac1-4c5a-bd69-336b45be3a5d">
 
 ## How to Use
 
